@@ -5,6 +5,8 @@ nGinTonic
 
 It extends [Phaser](http://phaser.io/).
 
+Current version is 0.1.0
+
 License
 -------
 

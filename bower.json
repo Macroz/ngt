@@ -1,0 +1,35 @@
+{
+  "name": "ngt",
+  "version": "0.1.0",
+  "authors": [
+    "Markku Rontu <markku.rontu@iki.fi>"
+  ],
+  "description": "nGinTonic (ngt) is a Entity-Component-System game engine.",
+  "main": "ngt.js",
+  "keywords": [
+    "ngt",
+    "nGinTonic",
+    "entity",
+    "component",
+    "system",
+    "game",
+    "engine",
+    "game",
+    "engine",
+    "ECS",
+    "Phaser"
+  ],
+  "license": "EPL",
+  "homepage": "https://github.com/Macroz/ngt",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser-official": "~2.0.3",
+    "lodash": "~2.4.1"
+  }
+}

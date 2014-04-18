@@ -1,7 +1,7 @@
 nGinTonic 
 =========
 
-(ngt) is a Entity-Component-System game engine for 2D games.
+nGinTonic (ngt) is a Entity-Component-System game engine for 2D games.
 
 It extends [Phaser](http://phaser.io/).
 

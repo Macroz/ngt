@@ -214,6 +214,10 @@ function Engine () {
                     sprite.input.pixelPerfectClick = true;
                     sprite.input.pixelPerfectOver = true;
                 }
+                if (entity.size) {
+                    sprite.width = entity.size.width;
+                    sprite.height = entity.size.height;
+                }
                 runtime.phaser.sprites[id] = sprite;
             }
         };

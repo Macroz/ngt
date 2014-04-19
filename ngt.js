@@ -107,7 +107,7 @@ function Engine () {
 
     if (typeof (self.start == 'undefined')) {
         Engine.prototype.start = function() {
-            phaser = phaser = new Phaser.Game(2048, 1536, Phaser.CANVAS, 'canvas', { preload: self.preload, create: self.create, update: self.update, render: self.render });
+            phaser = self.phaser = new Phaser.Game(2048, 1536, Phaser.CANVAS, 'canvas', { preload: self.preload, create: self.create, update: self.update, render: self.render });
         };
     }
 

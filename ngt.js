@@ -26,6 +26,8 @@ function Engine () {
     runtime.index = {};
     runtime.index.name = {};
 
+    var camera = self.camera = {};
+
     console.log('Indexing entities by ' + Object.keys(runtime.index).join(', '));
 
     runtime.components = {};
@@ -106,6 +108,33 @@ function Engine () {
     if (typeof (self.start == 'undefined')) {
         Engine.prototype.start = function() {
             phaser = phaser = new Phaser.Game(2048, 1536, Phaser.CANVAS, 'canvas', { preload: self.preload, create: self.create, update: self.update, render: self.render });
+        };
+    }
+
+    if (typeof (self.cameraAt == 'undefined')) {
+        Engine.prototype.cameraAt = function(path) {
+            self.camera.path = path;
+            self.camera.needsUpdate = true;
+        };
+    }
+
+    if (typeof (self.updateVisibility == 'undefined')) {
+        Engine.prototype.updateVisibility = function () {
+            var path = self.camera.path;
+            self.camera.needsUpdate = false;
+            for (var key in data.entities) {
+                var entity = data.entities[key];
+                var name = entity.name;
+                var group = runtime.phaser.objects[entity.id];
+                if (group) {
+                    if (name.startsWith(path)) {
+                        group.visible = true;
+                    } else {
+                        group.visible = false;
+                    }
+                    console.log(name + ' is ' + group.visible);
+                }
+            }
         };
     }
 
@@ -244,6 +273,9 @@ function Engine () {
 
     if (typeof (self.render == 'undefined')) {
         Engine.prototype.render = function() {
+            if (camera.needsUpdate) {
+                self.updateVisibility();
+            }
             if (runtime.debug) {
                 phaser.debug.inputInfo(8, 16);
                 for (var i in runtime.phaser.sprites) {

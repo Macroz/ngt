@@ -12,7 +12,7 @@ if (typeof String.endsWith == 'undefined') {
     }
 }
 
-function Engine () {
+function Engine (options) {
     var self = this;
 
     var data = self.data = {};
@@ -248,6 +248,10 @@ function Engine () {
                     sprite.height = entity.size.height;
                 }
                 runtime.phaser.sprites[id] = sprite;
+            }
+
+            if (options.create) {
+                options.create();
             }
         };
     }

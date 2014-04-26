@@ -182,6 +182,7 @@ function Engine (options) {
                 var id = runtime.components.image[key];
                 var entity = data.entities[id];
                 var name = entity.image.name || entity.name;
+                name = name.replace(/#\d+/g, '');
                 var defaultExt = (entity.name.endsWith('background') ? '.jpg' : '.png');
                 var defaultSrc = ('images/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
                 var src = entity.image.src || defaultSrc + defaultExt;
@@ -256,11 +257,12 @@ function Engine (options) {
                 var id = runtime.components.image[key];
                 var entity = data.entities[id];
                 var name = entity.image.name || entity.name;
+                var imageName = name.replace(/#\d+/g, '');
                 var group = runtime.phaser.objects[id];
                 if (options.log) {
                     console.log('Creating phaser sprite for "' + entity.name + '"');
                 }
-                var sprite = phaser.add.sprite(0, 0, name);
+                var sprite = phaser.add.sprite(0, 0, imageName);
                 group.add(sprite);
                 var opacity = 1.0 - (entity.opacity || 0);
                 sprite.name = entity.name;

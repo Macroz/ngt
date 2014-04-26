@@ -176,6 +176,8 @@ function Engine (options) {
             if (options.log) {
                 console.log('Preloading...');
             }
+
+            var images = {};
             for (var key in runtime.components.image) {
                 var id = runtime.components.image[key];
                 var entity = data.entities[id];
@@ -186,6 +188,13 @@ function Engine (options) {
                 if (options.log) {
                     console.log('Loading texture "' + name + '" from "' + src + '"');
                 }
+                if (!images[name]) {
+                    images[name] = src;
+                }
+            }
+
+            for (var name in images) {
+                var src = images[name];
                 phaser.load.image(name, src);
             }
         };

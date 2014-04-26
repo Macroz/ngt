@@ -15,6 +15,11 @@ if (typeof String.endsWith == 'undefined') {
 function Engine (options) {
     var self = this;
 
+    options = options || {};
+    options.screen = options.screen || {};
+    options.screen.width = options.screen.width || 2048;
+    options.screen.height = options.screen.height || 1536;
+
     var data = self.data = {};
     data.tick = 0;
     data.entities = {};
@@ -107,7 +112,7 @@ function Engine (options) {
 
     if (typeof (self.start == 'undefined')) {
         Engine.prototype.start = function() {
-            phaser = self.phaser = new Phaser.Game(2048, 1536, Phaser.CANVAS, 'canvas', { preload: self.preload, create: self.create, update: self.update, render: self.render });
+            phaser = self.phaser = new Phaser.Game(options.screen.width, options.screen.height, Phaser.CANVAS, 'canvas', { preload: self.preload, create: self.create, update: self.update, render: self.render });
         };
     }
 

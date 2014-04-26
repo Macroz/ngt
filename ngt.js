@@ -215,8 +215,8 @@ function Engine (options) {
                 }
                 var size = entity.size;
                 if (size) {
-                    group.width = size.width;
-                    group.height = size.height;
+                    group.width = size.width || options.screen.width;
+                    group.height = size.height || options.screen.height;
                 }
                 runtime.phaser.objects[id] = group;
             }

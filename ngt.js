@@ -33,7 +33,9 @@ function Engine (options) {
 
     var camera = self.camera = {};
 
-    console.log('Indexing entities by ' + Object.keys(runtime.index).join(', '));
+    if (options.log) {
+        console.log('Indexing entities by ' + Object.keys(runtime.index).join(', '));
+    }
 
     runtime.components = {};
     runtime.components.image = [];
@@ -42,8 +44,9 @@ function Engine (options) {
     runtime.components.size = [];
     runtime.components.bounds = [];
 
-    console.log('Storing components by ' + Object.keys(runtime.components).join(', '));
-
+    if (options.log) {
+        console.log('Storing components by ' + Object.keys(runtime.components).join(', '));
+    }
     runtime.phaser = {};
     runtime.phaser.sprites = {};
     runtime.phaser.objects = {};
@@ -101,7 +104,9 @@ function Engine (options) {
             data.entities[entity.id] = entity;
             var parent = data.entities[entity.parent] || {name: '<stage>'};
 
-            console.log('Created entity ' + entity.id + ' "'  + entity.name + '" parent "' + parent.name + '"');
+            if (options.log) {
+                console.log('Created entity ' + entity.id + ' "'  + entity.name + '" parent "' + parent.name + '"');
+            }
 
             self.nextUpdateTime = new Date().getTime();
             self.fps = 25;
@@ -168,7 +173,9 @@ function Engine (options) {
 
     if (typeof (self.preload == 'undefined')) {
         Engine.prototype.preload = function () {
-            console.log('Preloading...');
+            if (options.log) {
+                console.log('Preloading...');
+            }
             for (var key in runtime.components.image) {
                 var id = runtime.components.image[key];
                 var entity = data.entities[id];
@@ -176,7 +183,9 @@ function Engine (options) {
                 var defaultExt = (entity.name.endsWith('background') ? '.jpg' : '.png');
                 var defaultSrc = ('images/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
                 var src = entity.image.src || defaultSrc + defaultExt;
-                console.log('Loading texture "' + name + '" from "' + src + '"');
+                if (options.log) {
+                    console.log('Loading texture "' + name + '" from "' + src + '"');
+                }
                 phaser.load.image(name, src);
             }
         };
@@ -202,8 +211,11 @@ function Engine (options) {
                 var entity = data.entities[id];
                 var parent = self.findParentWithPhaser(entity) || {name: '<stage>'};
                 var parentPhaser = runtime.phaser.objects[parent.id];
-                console.log('Creating phaser group for "' + entity.name + '", phaser parent "' + parent.name + '"');
+                if (options.log) {
+                    console.log('Creating phaser group for "' + entity.name + '", phaser parent "' + parent.name + '"');
+                }
                 var group = phaser.add.group(parentPhaser, entity.name);
+                group.visible = false;
                 var position = entity.position;
                 if (position) {
                     group.x = position.x;
@@ -236,7 +248,9 @@ function Engine (options) {
                 var entity = data.entities[id];
                 var name = entity.image.name || entity.name;
                 var group = runtime.phaser.objects[id];
-                console.log('Creating phaser sprite for "' + entity.name + '"');
+                if (options.log) {
+                    console.log('Creating phaser sprite for "' + entity.name + '"');
+                }
                 var sprite = phaser.add.sprite(0, 0, name);
                 group.add(sprite);
                 var opacity = 1.0 - (entity.opacity || 0);

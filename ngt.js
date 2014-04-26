@@ -173,8 +173,9 @@ function Engine (options) {
                 var id = runtime.components.image[key];
                 var entity = data.entities[id];
                 var name = entity.image.name || entity.name;
-                var defaultSrc = ('images/' + entity.name.replace(/\//g, '_') + (entity.name.endsWith('background') ? '.jpg' : '.png'));
-                var src = entity.image.src || defaultSrc;
+                var defaultExt = (entity.name.endsWith('background') ? '.jpg' : '.png');
+                var defaultSrc = ('images/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
+                var src = entity.image.src || defaultSrc + defaultExt;
                 console.log('Loading texture "' + name + '" from "' + src + '"');
                 phaser.load.image(name, src);
             }

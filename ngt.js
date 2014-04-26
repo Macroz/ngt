@@ -132,7 +132,6 @@ function Engine (options) {
                     } else {
                         group.visible = false;
                     }
-                    console.log(name + ' is ' + group.visible);
                 }
             }
         };

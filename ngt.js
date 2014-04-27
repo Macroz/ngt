@@ -19,6 +19,7 @@ function Engine (options) {
     options.screen = options.screen || {};
     options.screen.width = options.screen.width || 2048;
     options.screen.height = options.screen.height || 1536;
+    options.interact = options.interact || function(id) {};
 
     var data = self.data = {};
     data.tick = 0;
@@ -296,9 +297,11 @@ function Engine (options) {
                     if (sprite.input && sprite.input.pointerDown(phaser.input.activePointer.id)) {
                         //phaser.add.tween(phaser.angle).to({angle: 20}, 200, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
                         //phaser.add.tween(phaser.scale).to( {x: 1.2, y: 1.2}, 1000, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
-                        phaserObject.angle = 20;
+                        //phaserObject.angle = 20;
+                        options.interact(id);
                     } else {
-                        phaserObject.angle = 0;
+                        options.interact();
+                        //phaserObject.angle = 0;
                     }
                 }
             }

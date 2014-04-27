@@ -310,6 +310,9 @@ function Engine (options) {
             if (camera.needsUpdate) {
                 self.updateVisibility();
             }
+            if (options.render) {
+                options.render();
+            }
             if (runtime.debug) {
                 phaser.debug.inputInfo(8, 16);
                 for (var i in runtime.phaser.sprites) {

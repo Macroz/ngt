@@ -268,12 +268,13 @@ function Engine (options) {
                 var opacity = 1.0 - (entity.opacity || 0);
                 sprite.name = entity.name;
                 sprite.alpha = opacity;
-                if (entity.name.indexOf('background') == -1 && entity.name.indexOf('stones') == -1) {
-                    sprite.inputEnabled = true;
-                    sprite.input.useHandCursor = true;
-                    sprite.input.pixelPerfectClick = true;
-                    sprite.input.pixelPerfectOver = true;
-                }
+
+                sprite.inputEnabled = true;
+                sprite.input.useHandCursor = true;
+                sprite.input.pixelPerfectClick = true;
+                sprite.input.pixelPerfectOver = true;
+                sprite.events.onInputDown.add(options.interact, this);
+
                 if (entity.size) {
                     sprite.width = entity.size.width;
                     sprite.height = entity.size.height;
@@ -292,22 +293,6 @@ function Engine (options) {
 
     if (typeof (self.update == 'undefined')) {
         Engine.prototype.update = function () {
-            for (var i in runtime.phaser.sprites) {
-                var sprite = runtime.phaser.sprites[i];
-                var id = runtime.index.name[sprite.name];
-                var phaserObject = runtime.phaser.objects[id];
-                if (phaserObject) {
-                    if (sprite.input && sprite.input.pointerDown(phaser.input.activePointer.id)) {
-                        //phaser.add.tween(phaser.angle).to({angle: 20}, 200, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
-                        //phaser.add.tween(phaser.scale).to( {x: 1.2, y: 1.2}, 1000, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
-                        //phaserObject.angle = 20;
-                        options.interact(id);
-                    } else {
-                        options.interact();
-                        //phaserObject.angle = 0;
-                    }
-                }
-            }
         };
     }
 

@@ -270,9 +270,11 @@ function Engine (options) {
                 sprite.alpha = opacity;
 
                 sprite.inputEnabled = true;
-                sprite.input.useHandCursor = true;
-                sprite.input.pixelPerfectClick = true;
-                sprite.input.pixelPerfectOver = true;
+                if (name.indexOf('background') == -1) {
+                    sprite.input.useHandCursor = true;
+                    sprite.input.pixelPerfectClick = true;
+                    sprite.input.pixelPerfectOver = true;
+                }
                 sprite.events.onInputDown.add(options.interact, this);
 
                 if (entity.size) {

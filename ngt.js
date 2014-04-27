@@ -278,6 +278,9 @@ function Engine (options) {
                     sprite.width = entity.size.width;
                     sprite.height = entity.size.height;
                 }
+                if (entity.image.flip) {
+                    sprite.scale.x = -1;
+                }
                 runtime.phaser.sprites[id] = sprite;
             }
 

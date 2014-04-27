@@ -138,7 +138,7 @@ function Engine (options) {
                 var name = entity.name;
                 var group = runtime.phaser.objects[entity.id];
                 if (group) {
-                    if (name.startsWith(path)) {
+                    if (name.startsWith(path) || 'hud' == name) {
                         group.visible = true;
                     } else {
                         group.visible = false;

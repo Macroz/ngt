@@ -227,7 +227,7 @@ function Engine (options) {
                     console.log('Creating phaser group for "' + entity.name + '", phaser parent "' + parent.name + '"');
                 }
                 var group = phaser.add.group(parentPhaser, entity.name);
-                group.visible = false;
+                group.visible = entity.visible;
                 var position = entity.position;
                 if (position) {
                     group.x = position.x;

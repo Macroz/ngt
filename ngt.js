@@ -132,13 +132,14 @@ function Engine (options) {
     if (typeof (self.updateVisibility == 'undefined')) {
         Engine.prototype.updateVisibility = function () {
             var path = self.camera.path;
+            var root = self.camera.root;
             self.camera.needsUpdate = false;
             for (var key in data.entities) {
                 var entity = data.entities[key];
                 var name = entity.name;
                 var group = runtime.phaser.objects[entity.id];
-                if (group) {
-                    if (name.startsWith(path) || 'hud' == name) {
+                if (group && name.startsWith(root)) {
+                    if (name.startsWith(path)) {
                         group.visible = true;
                     } else {
                         group.visible = false;

@@ -299,8 +299,8 @@ function Engine (options) {
                 runtime.phaser.sprites[id] = sprite;
             }
 
-            if (options.create) {
-                options.create();
+            if (options.start) {
+                options.start();
             }
         };
     }

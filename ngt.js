@@ -32,8 +32,6 @@ function Engine (options) {
     runtime.index = {};
     runtime.index.name = {};
 
-    var camera = self.camera = {};
-
     if (options.log) {
         console.log('Indexing entities by ' + Object.keys(runtime.index).join(', '));
     }
@@ -122,28 +120,14 @@ function Engine (options) {
         };
     }
 
-    if (typeof (self.cameraAt == 'undefined')) {
-        Engine.prototype.cameraAt = function(path) {
-            self.camera.path = path;
-            self.camera.needsUpdate = true;
-        };
-    }
-
-    if (typeof (self.updateVisibility == 'undefined')) {
-        Engine.prototype.updateVisibility = function () {
-            var path = self.camera.path;
-            var root = self.camera.root;
-            self.camera.needsUpdate = false;
+    if (typeof (self.visible == 'undefined')) {
+        Engine.prototype.visible = function (path, enabled) {
             for (var key in data.entities) {
                 var entity = data.entities[key];
                 var name = entity.name;
                 var group = runtime.phaser.objects[entity.id];
-                if (group && name.startsWith(root)) {
-                    if (name.startsWith(path)) {
-                        group.visible = true;
-                    } else {
-                        group.visible = false;
-                    }
+                if (group && name.startsWith(path)) {
+                    group.visible = enabled;
                 }
             }
         };
@@ -256,9 +240,6 @@ function Engine (options) {
                 runtime.phaser.objects[id] = group;
             }
 
-            var bounds = runtime.components.bounds[0];
-            phaser.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-
             // create sprites for all entities with image component
             var images = _.map(runtime.components.image, function(key) {return key});
             images.sort(function(a, b) {
@@ -312,9 +293,6 @@ function Engine (options) {
 
     if (typeof (self.render == 'undefined')) {
         Engine.prototype.render = function() {
-            if (camera.needsUpdate) {
-                self.updateVisibility();
-            }
             if (options.render) {
                 options.render();
             }

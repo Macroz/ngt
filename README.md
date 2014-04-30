@@ -5,7 +5,7 @@ nGinTonic (ngt) is a Entity-Component-System game engine for 2D games.
 
 It extends [Phaser](http://phaser.io/).
 
-Current version is 0.1.0
+Current version is 0.2.0
 
 License
 -------

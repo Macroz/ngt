@@ -176,7 +176,11 @@ function Engine (options) {
     if (typeof (self.preload == 'undefined')) {
         Engine.prototype.preload = function () {
             if (options.log) {
-                console.log('Preloading...');
+                console.log('Loading...');
+            }
+
+            if (options.preload) {
+                options.preload();
             }
 
             var images = {};

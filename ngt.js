@@ -216,6 +216,13 @@ function Engine (options) {
             phaser.scale.pageAlignVertically = true;
             phaser.scale.refresh();
 
+            if (options.create) {
+                options.create();
+            }
+
+            var bounds = runtime.components.bounds[0];
+            phaser.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+
             // create group for each phaser object and hierarchy
             var groups = _.union(runtime.components.size, runtime.components.scale, runtime.components.position, runtime.components.image);
             groups.sort(function(a, b) {

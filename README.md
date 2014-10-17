@@ -7,6 +7,8 @@ It extends [Phaser](http://phaser.io/).
 
 Current version is 0.2.0
 
+See also It extends [ngt-base](https://github.com/Macroz/ngt-base) for a working basic repository.
+
 License
 -------
 

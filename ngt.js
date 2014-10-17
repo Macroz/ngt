@@ -259,7 +259,7 @@ function Engine (options) {
                 }
                 var sprite = phaser.add.sprite(0, 0, imageName);
                 group.add(sprite);
-                var opacity = 1.0 - (entity.opacity || 0);
+                var opacity = (entity.opacity || 1.0);
                 sprite.name = entity.name;
                 sprite.alpha = opacity;
 

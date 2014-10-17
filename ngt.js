@@ -16,6 +16,7 @@ function Engine (options) {
     var self = this;
 
     options = options || {};
+    options.assets = options.assets || '';
     options.screen = options.screen || {};
     options.screen.width = options.screen.width || 2048;
     options.screen.height = options.screen.height || 1536;
@@ -174,7 +175,7 @@ function Engine (options) {
                 var name = entity.image.name || entity.name;
                 name = name.replace(/#\d+/g, '');
                 var defaultExt = (entity.name.endsWith('background') ? '.jpg' : '.png');
-                var defaultSrc = ('images/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
+                var defaultSrc = (options.assets + 'images/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
                 var src = entity.image.src || defaultSrc + defaultExt;
                 if (options.log) {
                     console.log('Loading texture "' + name + '" from "' + src + '"');

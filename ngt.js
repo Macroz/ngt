@@ -263,13 +263,19 @@ function Engine (options) {
                 sprite.name = entity.name;
                 sprite.alpha = opacity;
 
-                sprite.inputEnabled = true;
-                if (name.indexOf('background') == -1) {
-                    sprite.input.useHandCursor = true;
-                    sprite.input.pixelPerfectClick = true;
-                    sprite.input.pixelPerfectOver = true;
+                var interact = entity.interact;
+                if (!entity.interact && entity.interact !== false) {
+                    interact = options.interact;
                 }
-                sprite.events.onInputDown.add(options.interact, this);
+                if (typeof(interact) === 'function') {
+                    sprite.inputEnabled = true;
+                    if (name.indexOf('background') == -1) {
+                        sprite.input.useHandCursor = true;
+                        sprite.input.pixelPerfectClick = true;
+                        sprite.input.pixelPerfectOver = true;
+                    }
+                    sprite.events.onInputDown.add(interact, this);
+                }
 
                 if (entity.size) {
                     sprite.width = entity.size.width;

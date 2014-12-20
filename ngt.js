@@ -196,16 +196,18 @@ function Engine (options) {
     Engine.prototype.makeUpdateEntity = function (entity) {
       return function() {
         var group = runtime.phaser.objects[entity.id];
+        var sprite = runtime.phaser.sprites[entity.id];
 
         var position = entity.position;
         var rotation = entity.rotation;
+        var pivot = entity.pivot;
         var size = entity.size;
         var image = entity.image;
 
         if (position) {
-          if (rotation && rotation.pivot) {
-            group.x = position.x + rotation.pivot.x;
-            group.y = position.y + rotation.pivot.y;
+          if (pivot) {
+            group.x = position.x + pivot.x;
+            group.y = position.y + pivot.y;
           } else {
             group.x = position.x;
             group.y = position.y;
@@ -219,13 +221,27 @@ function Engine (options) {
         if (size) {
           group.width = size.width || options.screen.width;
           group.height = size.height || options.screen.height;
+
+          if (sprite) {
+            sprite.width = entity.size.width;
+            sprite.height = entity.size.height;
+          }
         }
 
         if (image) {
-          if (rotation && rotation.pivot) {
+          if (pivot) {
             var sprite = runtime.phaser.sprites[entity.id];
-            sprite.x = -rotation.pivot.x;
-            sprite.y = -rotation.pivot.y;
+            sprite.x = -pivot.x;
+            sprite.y = -pivot.y;
+          }
+
+          if (sprite) {
+            if (image.flip) {
+              sprite.scale.x = -1;
+              sprite.x = -sprite.x;
+            } else {
+              sprite.scale.x = 1;
+            }
           }
         }
       };
@@ -304,13 +320,6 @@ function Engine (options) {
           sprite.events.onInputDown.add(interact, entity);
         }
 
-        if (entity.size) {
-          sprite.width = entity.size.width;
-          sprite.height = entity.size.height;
-        }
-        if (entity.image.flip) {
-          sprite.scale.x = -1;
-        }
         runtime.phaser.sprites[id] = sprite;
       }
 

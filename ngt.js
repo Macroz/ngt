@@ -340,6 +340,16 @@ function Engine (options) {
           point.lineTo(0, 9);
           debug.add(point);
 
+          if (entity.path) {
+            var path = phaser.add.graphics(0, 0);
+            path.lineStyle(3, 0xFFFF00, 1);
+            path.moveTo(entity.path[0][0], entity.path[0][1]);
+            for (var i = 1; i < entity.path.length; ++i) {
+              path.lineTo(entity.path[i][0], entity.path[i][1]);
+            }
+            debug.add(path);
+          }
+
           var style = {font: '20px Arial', fill: '#FFFFFF', align: 'left'};
           var text = phaser.add.text(0, 0, entity.name, style);
           debug.add(text);

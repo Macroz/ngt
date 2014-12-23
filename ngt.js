@@ -202,6 +202,7 @@ function Engine (options) {
         var rotation = entity.rotation;
         var pivot = entity.pivot;
         var size = entity.size;
+        var scale = entity.scale;
         var image = entity.image;
 
         if (position) {
@@ -226,6 +227,11 @@ function Engine (options) {
             sprite.width = entity.size.width;
             sprite.height = entity.size.height;
           }
+        }
+
+        if (scale) {
+          group.scale.x = scale.x;
+          group.scale.y = scale.y;
         }
 
         if (image) {

@@ -248,6 +248,8 @@ function Engine (options) {
             } else {
               sprite.scale.x = 1;
             }
+            var opacity = (entity.opacity || 1.0);
+            sprite.alpha = opacity;
           }
         }
       };
@@ -308,9 +310,7 @@ function Engine (options) {
         }
         var sprite = phaser.add.sprite(0, 0, imageName);
         group.add(sprite);
-        var opacity = (entity.opacity || 1.0);
         sprite.name = entity.name;
-        sprite.alpha = opacity;
 
         var interact = entity.interact;
         if (!entity.interact && entity.interact !== false) {

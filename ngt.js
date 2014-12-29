@@ -224,8 +224,8 @@ function Engine (options) {
           group.height = size.height || options.screen.height;
 
           if (sprite) {
-            sprite.width = entity.size.width;
-            sprite.height = entity.size.height;
+            sprite.width = size.width;
+            sprite.height = size.height;
           }
         }
 

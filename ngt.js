@@ -248,7 +248,7 @@ function Engine (options) {
             } else {
               sprite.scale.x = 1;
             }
-            var opacity = (entity.opacity || 1.0);
+            var opacity = ('opacity' in entity ? entity.opacity : 1.0);
             sprite.alpha = opacity;
           }
         }

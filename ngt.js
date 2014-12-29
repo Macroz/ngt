@@ -53,6 +53,21 @@ function Engine (options) {
 
   var phaser;
 
+  function findInteract(entity) {
+    if (entity) {
+      if (entity.interact === false) {
+        return false;
+      }
+      if (entity.interact) {
+        return entity.interact;
+      }
+      if (entity.parent) {
+        var parent = data.entities[entity.parent]
+        return findInteract(parent);
+      }
+    }
+  }
+
   if (typeof (self.simulate == 'undefined')) {
     Engine.prototype.simulate = function () {
       var startTick = data.tick;
@@ -312,8 +327,8 @@ function Engine (options) {
         group.add(sprite);
         sprite.name = entity.name;
 
-        var interact = entity.interact;
-        if (!entity.interact && entity.interact !== false) {
+        var interact = findInteract(entity);
+        if (!interact && interact !== false) {
           interact = options.interact;
         }
         if (typeof(interact) === 'function') {

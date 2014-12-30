@@ -275,11 +275,9 @@ function Engine (options) {
     Engine.prototype.create = function () {
       phaser.input.keyboard.addKey(Phaser.Keyboard.D).onUp.add(function() {runtime.debug = !runtime.debug;});
       phaser.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      //phaser.scale.setShowAll();
       phaser.scale.pageAlignHorizontally = true;
       phaser.scale.pageAlignVertically = true;
-      phaser.scale.refresh();
-      //phaser.scale.forceOrientation(true, false);
+      phaser.scale.forceOrientation(true, false);
 
       if (options.create) {
         options.create();

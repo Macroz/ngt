@@ -219,6 +219,7 @@ function Engine (options) {
         var size = entity.size;
         var scale = entity.scale;
         var image = entity.image;
+        var crop = entity.crop;
 
         if (position) {
           if (pivot) {
@@ -265,6 +266,15 @@ function Engine (options) {
             }
             var opacity = ('opacity' in entity ? entity.opacity : 1.0);
             sprite.alpha = opacity;
+
+            if (crop) {
+              var r = new Phaser.Rectangle();
+              r.x = crop.x;
+              r.y = crop.y;
+              r.width = crop.width;
+              r.height = crop.height;
+              sprite.crop(r);
+            }
           }
         }
       };
@@ -278,6 +288,7 @@ function Engine (options) {
       phaser.scale.pageAlignHorizontally = true;
       phaser.scale.pageAlignVertically = true;
       phaser.scale.forceOrientation(true, false);
+      phaser.scale.refresh();
 
       if (options.create) {
         options.create();

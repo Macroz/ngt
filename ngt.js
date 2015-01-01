@@ -305,16 +305,54 @@ function Engine (options) {
     entity.position.x = runtime.drag.entityStart.x + dx;
     entity.position.y = runtime.drag.entityStart.y + dy;
 
+    if (entity.drag.limit) {
+      if (entity.drag.limit.relative) {
+        if (entity.position.x < runtime.drag.entityStart.x - entity.drag.limit.relative.left) {
+          entity.position.x = runtime.drag.entityStart.x - entity.drag.limit.relative.left;
+        } else if (entity.position.x > runtime.drag.entityStart.x + entity.drag.limit.relative.right) {
+          entity.position.x = runtime.drag.entityStart.x + entity.drag.limit.relative.right;
+        }
+        if (entity.position.y < runtime.drag.entityStart.y - entity.drag.limit.relative.up) {
+          entity.position.y = runtime.drag.entityStart.y - entity.drag.limit.relative.up;
+        } else if (entity.position.y > runtime.drag.entityStart.y + entity.drag.limit.relative.down) {
+          entity.position.y = runtime.drag.entityStart.y + entity.drag.limit.relative.down;
+        }
+      }
+      if (entity.drag.limit.absolute) {
+        if (entity.position.x < entity.drag.limit.absolute.left) {
+          entity.position.x = entity.drag.limit.absolute.left;
+        } else if (entity.position.x > entity.drag.limit.absolute.right) {
+          entity.position.x = entity.drag.limit.absolute.right;
+        }
+        if (entity.position.y < entity.drag.limit.absolute.up) {
+          entity.position.y = entity.drag.limit.absolute.up;
+        } else if (entity.position.y > entity.drag.limit.absolute.down) {
+          entity.position.y = entity.drag.limit.absolute.down;
+        }
+      }
+    }
+
+    entity.update();
+  }
+
   function dragEntityMove(entity, sprite, pointer) {
-    if (entity.drag && entity.drag.move) {
-      entity.drag.move(entity, sprite, pointer);
+    if (entity.drag) {
+      updateEntityDrag(entity, sprite, pointer);
+
+      if (entity.drag.move) {
+        entity.drag.move(entity, sprite, pointer);
+      }
     }
   }
 
   function dragEntityStop(entity) {
     return function (sprite, pointer) {
-      if (entity.drag && entity.drag.stop) {
-        entity.drag.stop(entity, sprite, pointer);
+      if (entity.drag) {
+        updateEntityDrag(entity, sprite, pointer);
+
+        if (entity.drag.stop) {
+          entity.drag.stop(entity, sprite, pointer);
+        }
       }
       delete runtime.drag;
     };

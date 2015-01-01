@@ -286,12 +286,24 @@ function Engine (options) {
       runtime.drag = {
         entity: entity,
         sprite: sprite,
-        pointer: pointer};
+        pointer: pointer,
+        entityStart: _.clone(entity.position),
+        pointerStart: {x: pointer.x, y: pointer.y},
+        spriteStart: {x: sprite.x, y: sprite.y}
+      };
       if (entity.drag && entity.drag.start) {
         entity.drag.start(entity, sprite, pointer);
       }
     };
   }
+
+  function updateEntityDrag(entity, sprite, pointer) {
+    var dx = pointer.x - runtime.drag.pointerStart.x;
+    var dy = pointer.y - runtime.drag.pointerStart.y;
+    sprite.x = runtime.drag.spriteStart.x;
+    sprite.y = runtime.drag.spriteStart.y;
+    entity.position.x = runtime.drag.entityStart.x + dx;
+    entity.position.y = runtime.drag.entityStart.y + dy;
 
   function dragEntityMove(entity, sprite, pointer) {
     if (entity.drag && entity.drag.move) {
@@ -382,6 +394,7 @@ function Engine (options) {
 
           if (drag) {
             sprite.input.enableDrag();
+            sprite.input.setDragLock(false, false);
             if (drag.start) {
               sprite.events.onDragStart.add(dragEntityStart(entity));
             }
@@ -446,9 +459,6 @@ function Engine (options) {
   if (typeof (self.update == 'undefined')) {
     Engine.prototype.update = function () {
       if (runtime.drag) {
-        var scale = runtime.drag.entity.scale || {x: 1, y: 1};
-        runtime.drag.entity.position.x = runtime.drag.sprite.x * scale.x;
-        runtime.drag.entity.position.y = runtime.drag.sprite.y * scale.y;
         dragEntityMove(runtime.drag.entity, runtime.drag.sprite, runtime.drag.pointer);
       }
     };

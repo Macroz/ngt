@@ -281,6 +281,33 @@ function Engine (options) {
     };
   }
 
+  function dragEntityStart(entity) {
+    return function (sprite, pointer) {
+      runtime.drag = {
+        entity: entity,
+        sprite: sprite,
+        pointer: pointer};
+      if (entity.drag && entity.drag.start) {
+        entity.drag.start(entity, sprite, pointer);
+      }
+    };
+  }
+
+  function dragEntityMove(entity, sprite, pointer) {
+    if (entity.drag && entity.drag.move) {
+      entity.drag.move(entity, sprite, pointer);
+    }
+  }
+
+  function dragEntityStop(entity) {
+    return function (sprite, pointer) {
+      if (entity.drag && entity.drag.stop) {
+        entity.drag.stop(entity, sprite, pointer);
+      }
+      delete runtime.drag;
+    };
+  }
+
   if (typeof (self.create == 'undefined')) {
     Engine.prototype.create = function () {
       phaser.input.keyboard.addKey(Phaser.Keyboard.D).onUp.add(function() {runtime.debug = !runtime.debug;});
@@ -340,14 +367,28 @@ function Engine (options) {
         if (!interact && interact !== false) {
           interact = options.interact;
         }
-        if (typeof(interact) === 'function') {
+        var drag = entity.drag;
+
+        if (interact || drag) {
           sprite.inputEnabled = true;
           if (name.indexOf('background') == -1) {
             sprite.input.useHandCursor = true;
             sprite.input.pixelPerfectClick = true;
             sprite.input.pixelPerfectOver = true;
           }
-          sprite.events.onInputDown.add(interact, entity);
+          if (interact) {
+            sprite.events.onInputDown.add(interact, entity);
+          }
+
+          if (drag) {
+            sprite.input.enableDrag();
+            if (drag.start) {
+              sprite.events.onDragStart.add(dragEntityStart(entity));
+            }
+            if (drag.stop) {
+              sprite.events.onDragStop.add(dragEntityStop(entity));
+            }
+          }
         }
 
         runtime.phaser.sprites[id] = sprite;
@@ -404,6 +445,12 @@ function Engine (options) {
 
   if (typeof (self.update == 'undefined')) {
     Engine.prototype.update = function () {
+      if (runtime.drag) {
+        var scale = runtime.drag.entity.scale || {x: 1, y: 1};
+        runtime.drag.entity.position.x = runtime.drag.sprite.x * scale.x;
+        runtime.drag.entity.position.y = runtime.drag.sprite.y * scale.y;
+        dragEntityMove(runtime.drag.entity, runtime.drag.sprite, runtime.drag.pointer);
+      }
     };
   }
 

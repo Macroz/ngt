@@ -44,6 +44,7 @@ function Engine (options) {
   runtime.components.size = [];
   runtime.components.bounds = [];
   runtime.components.rectangle = [];
+  runtime.components.sound = [];
 
   if (options.log) {
     console.log('Storing components by ' + Object.keys(runtime.components).join(', '));
@@ -52,6 +53,7 @@ function Engine (options) {
   runtime.phaser.sprites = {};
   runtime.phaser.objects = {};
   runtime.phaser.rectangles = {};
+  runtime.phaser.sounds = {};
 
   var phaser;
 
@@ -206,6 +208,35 @@ function Engine (options) {
         var src = images[name];
         phaser.load.image(name, src);
       }
+
+      var sounds = {};
+      for (var key in runtime.components.sound) {
+        var id = runtime.components.sound[key];
+        var entity = data.entities[id];
+        var name = entity.sound.name || entity.name;
+        name = name.replace(/#\d+/g, '');
+        var defaultExt = '.m4a';
+        var defaultSrc = (options.assets + 'sounds/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
+        var src = entity.sound.src || defaultSrc + defaultExt;
+        if (options.log) {
+          console.log('Loading sound "' + name + '" from "' + src + '"');
+        }
+        if (!sounds[name]) {
+          sounds[name] = src;
+        }
+      }
+
+      for (var name in sounds) {
+        var src = sounds[name];
+        phaser.load.audio(name, src);
+      }
+    };
+  }
+
+  if (typeof (self.playSound == 'undefined')) {
+    Engine.prototype.playSound = function (entity) {
+      var sound = runtime.phaser.sounds[entity.id];
+      sound.play();
     };
   }
 
@@ -453,6 +484,29 @@ function Engine (options) {
         }
 
         runtime.phaser.sprites[id] = sprite;
+      }
+
+      // create sounds for all entities with sound component
+      var sounds = _.map(runtime.components.sound, function(key) {return key});
+      sounds.sort(function(a, b) {
+        return a - b;
+      });
+      sounds.reverse();
+
+      for (var key in sounds) {
+        var id = runtime.components.sound[key];
+        var entity = data.entities[id];
+        var name = entity.sound.name || entity.name;
+        var soundName = name.replace(/#\d+/g, '');
+        var group = runtime.phaser.objects[id];
+        if (options.log) {
+          console.log('Creating phaser sound for "' + entity.name + '"');
+        }
+        var volume = entity.sound.volume || 1;
+        var loop = entity.sound.loop || false;
+
+        var sound = phaser.add.sound(soundName, volume, loop);
+        runtime.phaser.sounds[id] = sound;
       }
 
       // create background rectangles for all entities with rectangle component

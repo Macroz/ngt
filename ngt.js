@@ -215,7 +215,7 @@ function Engine (options) {
         var entity = data.entities[id];
         var name = entity.sound.name || entity.name;
         name = name.replace(/#\d+/g, '');
-        var defaultExt = '.m4a';
+        var defaultExt = '.ogg';
         var defaultSrc = (options.assets + 'sounds/' + entity.name.replace(/\//g, '_')).replace(/#\d+/g, '');
         var src = entity.sound.src || defaultSrc + defaultExt;
         if (options.log) {

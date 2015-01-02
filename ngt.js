@@ -43,6 +43,7 @@ function Engine (options) {
   runtime.components.scale = [];
   runtime.components.size = [];
   runtime.components.bounds = [];
+  runtime.components.rectangle = [];
 
   if (options.log) {
     console.log('Storing components by ' + Object.keys(runtime.components).join(', '));
@@ -50,6 +51,7 @@ function Engine (options) {
   runtime.phaser = {};
   runtime.phaser.sprites = {};
   runtime.phaser.objects = {};
+  runtime.phaser.rectangles = {};
 
   var phaser;
 
@@ -220,6 +222,7 @@ function Engine (options) {
         var scale = entity.scale;
         var image = entity.image;
         var crop = entity.crop;
+        var rectangle = entity.rectangle;
 
         if (position) {
           if (pivot) {
@@ -266,6 +269,11 @@ function Engine (options) {
             }
             var opacity = ('opacity' in entity ? entity.opacity : 1.0);
             sprite.alpha = opacity;
+
+            if (rectangle) {
+              var rect = runtime.phaser.rectangles[entity.id];
+              rect.alpha = opacity * rectangle.opacity;
+            }
 
             if (crop) {
               var r = new Phaser.Rectangle();
@@ -444,6 +452,44 @@ function Engine (options) {
 
         runtime.phaser.sprites[id] = sprite;
       }
+
+      // create background rectangles for all entities with rectangle component
+      var rectangles = _.map(runtime.components.rectangle, function(key) {return key});
+      rectangles.sort(function(a, b) {
+        return a - b;
+      });
+      rectangles.reverse();
+
+      for (var key in rectangles) {
+        var id = runtime.components.rectangle[key];
+        var entity = data.entities[id];
+        var name = entity.name;
+        var sprite = runtime.phaser.sprites[id];
+        var group = runtime.phaser.objects[id];
+        if (options.log) {
+          console.log('Creating background rectangle for "' + entity.name + '"');
+        }
+        var rectangle = entity.rectangle;
+        var rect = phaser.add.graphics(0, 0);
+        var opacity = entity.opacity ? entity.opacity : 1.0;
+        rect.beginFill(rectangle.color, opacity * rectangle.opacity);
+        var x = sprite.x - rectangle.padding;
+        var y = sprite.y - rectangle.padding;
+        var w = sprite.width + 2 * rectangle.padding;
+        var h = sprite.height + 2 * rectangle.padding;
+        if (rectangle.radius && rectangle.radius > 0) {
+          rect.drawRoundedRect(x, y, w, h, rectangle.radius);
+        } else {
+          rect.drawRect(x, y, w, h);
+        }
+        rect.endFill();
+        group.add(rect);
+        group.sendToBack(rect);
+        runtime.phaser.rectangles[id] = rect;
+      }
+
+
+
 
       // create entity debug info
       for (var key in data.entities) {

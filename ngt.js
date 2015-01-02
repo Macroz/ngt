@@ -272,6 +272,8 @@ function Engine (options) {
 
             if (rectangle) {
               var rect = runtime.phaser.rectangles[entity.id];
+              rect.x = sprite.x;
+              rect.y = sprite.y;
               rect.alpha = opacity * rectangle.opacity;
             }
 

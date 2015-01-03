@@ -240,6 +240,20 @@ function Engine (options) {
     };
   }
 
+  if (typeof (self.playMusic == 'undefined')) {
+    Engine.prototype.playMusic = function (entity) {
+      var music = runtime.phaser.sounds[entity.id];
+      music.play('', 0, 1, true);
+    };
+  }
+
+  if (typeof (self.playMusic == 'undefined')) {
+    Engine.prototype.stopMusic = function (entity) {
+      var music = runtime.phaser.sounds[entity.id];
+      music.stop();
+    };
+  }
+
   if (typeof (self.updateEntity == 'undefined')) {
     Engine.prototype.makeUpdateEntity = function (entity) {
       return function() {

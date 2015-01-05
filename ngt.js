@@ -269,6 +269,8 @@ function Engine (options) {
         var crop = entity.crop;
         var rectangle = entity.rectangle;
 
+
+
         if (position) {
           if (pivot) {
             group.x = position.x + pivot.x;
@@ -293,6 +295,11 @@ function Engine (options) {
           }
         }
 
+        if (group) {
+          var opacity = ('opacity' in entity ? entity.opacity : 1.0);
+          group.alpha = opacity;
+        }
+
         if (scale) {
           group.scale.x = scale.x;
           group.scale.y = scale.y;
@@ -312,14 +319,12 @@ function Engine (options) {
             } else {
               sprite.scale.x = 1;
             }
-            var opacity = ('opacity' in entity ? entity.opacity : 1.0);
-            sprite.alpha = opacity;
 
             if (rectangle) {
               var rect = runtime.phaser.rectangles[entity.id];
               rect.x = sprite.x;
               rect.y = sprite.y;
-              rect.alpha = opacity * rectangle.opacity;
+              rect.alpha = rectangle.opacity;
             }
 
             if (crop) {

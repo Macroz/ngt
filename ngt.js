@@ -156,7 +156,7 @@ function Engine (options) {
               entity.ambient.playing = true;
             } else if (!enabled && entity.ambient.playing) {
               entity.ambient.playing = false;
-              self.stopSound(entity);
+              self.fadeOutSound(entity);
             }
           }
         }
@@ -251,10 +251,17 @@ function Engine (options) {
     };
   }
 
+  if (typeof (self.fadeOutSound == 'undefined')) {
+    Engine.prototype.fadeOutSound = function (entity) {
+      var sound = runtime.phaser.sounds[entity.id];
+      sound.fadeOut(500, sound.loop);
+    };
+  }
+
   if (typeof (self.playSound == 'undefined')) {
     Engine.prototype.playSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      sound.play();
+      sound.play('', 0, 1, sound.loop);
     };
   }
 
@@ -268,14 +275,14 @@ function Engine (options) {
   if (typeof (self.playMusic == 'undefined')) {
     Engine.prototype.playMusic = function (entity) {
       var music = runtime.phaser.sounds[entity.id];
-      music.play('', 0, 1, true);
+      music.fadeIn(1000, music.loop);
     };
   }
 
   if (typeof (self.stopMusic == 'undefined')) {
     Engine.prototype.stopMusic = function (entity) {
       var music = runtime.phaser.sounds[entity.id];
-      music.stop();
+      music.fadeOut(1000);
     };
   }
 

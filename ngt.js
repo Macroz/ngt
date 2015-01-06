@@ -247,9 +247,9 @@ function Engine (options) {
   if (typeof (self.fadeInSound == 'undefined')) {
     Engine.prototype.fadeInSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      var volume = 'volume' in sound ? sound.volume : 1;
-      var loop = 'loop' in sound ? sound.loop : false;
-      var fade = 'fade' in sound ? sound.fade : 500;
+      var volume = 'volume' in entity.sound ? entity.sound.volume : 1;
+      var loop = 'loop' in entity.sound ? entity.sound.loop : false;
+      var fade = 'fade' in entity.sound ? entity.sound.fade : 500;
       sound.play('', 0, 0, loop);
       sound.fadeTo(fade, volume);
     };
@@ -258,7 +258,7 @@ function Engine (options) {
   if (typeof (self.fadeOutSound == 'undefined')) {
     Engine.prototype.fadeOutSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      var fade = 'fade' in sound ? sound.fade : 500;
+      var fade = 'fade' in entity.sound ? entity.sound.fade : 500;
       sound.fadeOut(fade);
     };
   }
@@ -266,9 +266,9 @@ function Engine (options) {
   if (typeof (self.playSound == 'undefined')) {
     Engine.prototype.playSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      var volume = 'volume' in sound ? sound.volume : 1;
-      var loop = 'loop' in sound ? sound.loop : false;
-      var fade = 'fade' in sound ? sound.fade : 500;
+      var volume = 'volume' in entity.sound ? entity.sound.volume : 1;
+      var loop = 'loop' in entity.sound ? entity.sound.loop : false;
+      var fade = 'fade' in entity.sound ? entity.sound.fade : 0;
       sound.play('', 0, 0, loop);
       sound.fadeTo(fade, volume);
     };
@@ -284,9 +284,9 @@ function Engine (options) {
   if (typeof (self.playMusic == 'undefined')) {
     Engine.prototype.playMusic = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      var volume = 'volume' in sound ? sound.volume : 1;
-      var loop = 'loop' in sound ? sound.loop : true;
-      var fade = 'fade' in sound ? sound.fade : 1000;
+      var volume = 'volume' in entity.sound ? entity.sound.volume : 1;
+      var loop = 'loop' in entity.sound ? entity.sound.loop : true;
+      var fade = 'fade' in entity.sound ? entity.sound.fade : 1000;
       sound.play('', 0, 0, loop);
       sound.fadeTo(fade, volume);
     };
@@ -295,7 +295,7 @@ function Engine (options) {
   if (typeof (self.stopMusic == 'undefined')) {
     Engine.prototype.stopMusic = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      var fade = 'fade' in sound ? sound.fade : 1000;
+      var fade = 'fade' in entity.sound ? entity.sound.fade : 1000;
       sound.fadeOut(fade);
     };
   }

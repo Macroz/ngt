@@ -247,21 +247,30 @@ function Engine (options) {
   if (typeof (self.fadeInSound == 'undefined')) {
     Engine.prototype.fadeInSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      sound.fadeIn(500, sound.loop);
+      var volume = 'volume' in sound ? sound.volume : 1;
+      var loop = 'loop' in sound ? sound.loop : false;
+      var fade = 'fade' in sound ? sound.fade : 500;
+      sound.play('', 0, 0, loop);
+      sound.fadeTo(fade, volume);
     };
   }
 
   if (typeof (self.fadeOutSound == 'undefined')) {
     Engine.prototype.fadeOutSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      sound.fadeOut(500, sound.loop);
+      var fade = 'fade' in sound ? sound.fade : 500;
+      sound.fadeOut(fade);
     };
   }
 
   if (typeof (self.playSound == 'undefined')) {
     Engine.prototype.playSound = function (entity) {
       var sound = runtime.phaser.sounds[entity.id];
-      sound.play('', 0, 1, sound.loop);
+      var volume = 'volume' in sound ? sound.volume : 1;
+      var loop = 'loop' in sound ? sound.loop : false;
+      var fade = 'fade' in sound ? sound.fade : 500;
+      sound.play('', 0, 0, loop);
+      sound.fadeTo(fade, volume);
     };
   }
 
@@ -274,15 +283,20 @@ function Engine (options) {
 
   if (typeof (self.playMusic == 'undefined')) {
     Engine.prototype.playMusic = function (entity) {
-      var music = runtime.phaser.sounds[entity.id];
-      music.fadeIn(1000, music.loop);
+      var sound = runtime.phaser.sounds[entity.id];
+      var volume = 'volume' in sound ? sound.volume : 1;
+      var loop = 'loop' in sound ? sound.loop : true;
+      var fade = 'fade' in sound ? sound.fade : 1000;
+      sound.play('', 0, 0, loop);
+      sound.fadeTo(fade, volume);
     };
   }
 
   if (typeof (self.stopMusic == 'undefined')) {
     Engine.prototype.stopMusic = function (entity) {
-      var music = runtime.phaser.sounds[entity.id];
-      music.fadeOut(1000);
+      var sound = runtime.phaser.sounds[entity.id];
+      var fade = 'fade' in sound ? sound.fade : 1000;
+      sound.fadeOut(fade);
     };
   }
 

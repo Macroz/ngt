@@ -247,7 +247,7 @@ function Engine (options) {
     };
   }
 
-  if (typeof (self.playMusic == 'undefined')) {
+  if (typeof (self.stopMusic == 'undefined')) {
     Engine.prototype.stopMusic = function (entity) {
       var music = runtime.phaser.sounds[entity.id];
       music.stop();

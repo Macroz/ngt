@@ -240,6 +240,13 @@ function Engine (options) {
     };
   }
 
+  if (typeof (self.stopSound == 'undefined')) {
+    Engine.prototype.stopSound = function (entity) {
+      var sound = runtime.phaser.sounds[entity.id];
+      sound.stop();
+    };
+  }
+
   if (typeof (self.playMusic == 'undefined')) {
     Engine.prototype.playMusic = function (entity) {
       var music = runtime.phaser.sounds[entity.id];

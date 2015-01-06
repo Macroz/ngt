@@ -152,8 +152,10 @@ function Engine (options) {
           }
           if (entity.ambient) {
             if (enabled && !entity.ambient.playing) {
-              self.playSound(entity);
+              self.fadeInSound(entity);
+              entity.ambient.playing = true;
             } else if (!enabled && entity.ambient.playing) {
+              entity.ambient.playing = false;
               self.stopSound(entity);
             }
           }
@@ -239,6 +241,13 @@ function Engine (options) {
         var src = sounds[name];
         phaser.load.audio(name, src);
       }
+    };
+  }
+
+  if (typeof (self.fadeInSound == 'undefined')) {
+    Engine.prototype.fadeInSound = function (entity) {
+      var sound = runtime.phaser.sounds[entity.id];
+      sound.fadeIn(500, sound.loop);
     };
   }
 

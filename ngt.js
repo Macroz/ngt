@@ -146,8 +146,17 @@ function Engine (options) {
         var entity = data.entities[key];
         var name = entity.name;
         var group = runtime.phaser.objects[entity.id];
-        if (group && name.startsWith(path)) {
-          group.visible = enabled;
+        if (name.startsWith(path)) {
+          if (group) {
+            group.visible = enabled;
+          }
+          if (entity.ambient) {
+            if (enabled && !entity.ambient.playing) {
+              self.playSound(entity);
+            } else if (!enabled && entity.ambient.playing) {
+              self.stopSound(entity);
+            }
+          }
         }
       }
     };

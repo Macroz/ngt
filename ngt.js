@@ -270,7 +270,11 @@ function Engine (options) {
       var loop = 'loop' in entity.sound ? entity.sound.loop : false;
       var fade = 'fade' in entity.sound ? entity.sound.fade : 0;
       sound.play('', 0, 0, loop);
-      sound.fadeTo(fade, volume);
+      if (fade > 0) {
+        sound.fadeTo(fade, volume);
+      } else {
+        sound.play('', 0, volume, loop);
+      }
     };
   }
 
